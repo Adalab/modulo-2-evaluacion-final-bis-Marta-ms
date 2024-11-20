@@ -1,28 +1,26 @@
-"use strict"
-
 "use strict";
 
 
-const saveDataButton = document.querySelector(".js-save-data");
-const recoverDataButton = document.querySelector(".js-recover-data");
+const saveUsers = document.querySelector(".js-save-btn");
+const recoverUsers = document.querySelector(".js-recover-btn");
 const list = document.querySelector(".js-list-users");
 
 let users = [];
 
+//OBTENER 10 USUARIOS DE LA API
 function getRandomUser(){
   fetch("https://randomuser.me/api/?results=10")
-  .then(function (response) {
-    return response.json();
-  })
-  .then(function (data) {
+  .then(response => response.json())
+  .then((data) => {
     for (const result of data.results) {
+      //los usurios obtenidos los guardo en el array vacío users para luego utilizarlo
       users.push({
         name: result.name.first,
         city: result.location.city,
         photo: result.picture.large,
         usrname: result.login.username,
         id: result.login.uuid,
-        isFriend: false,
+        isFriend: false, //por defecto no es amigo
       });
     }
     renderUsers();
@@ -30,15 +28,16 @@ function getRandomUser(){
 
 
 }
-getRandomUser();
+getRandomUser();//llamo a la función para que me aparezcan los datos en la consola
 
 
 function addFriend(event) {
-  event.preventDefault();
+  //event.preventDefault();
   const userId = event.currentTarget.id;
+  //console.log(userId); //  id del usuario
 
   for (const user of users) {
-    if (user.id === userId) {
+    if (user.id === userId) { //si el id del usuario es igual al id del usuario seleccionado
       const isFriend = user.isFriend;
       if (isFriend === "True") {
         user.isFriend = "False";
@@ -48,19 +47,23 @@ function addFriend(event) {
     }
   }
   list.innerHTML = "";
-  renderUsers();
+  renderUsers();//función que pinta los usuarios
 }
 
+//MARCAR COMO AMIGOS
 function addClassSelected() {
   for (const user of users) {
-    const friend = document.getElementById(`${user.id}`);
-    if (user.isFriend === "True") {
+    const friend = document.getElementById(`${user.id}`); //obtengo el elemento con el id del usuario
+    //si el usuario es amigo isFriend:True añado clase friends
+    if (user.isFriend === "True") { 
       friend.classList.add("friends");
     } else {
       friend.classList.remove("friends");
     }
   }
 }
+
+// PINTAR USUARIOS HTML
 function renderUsers() {
   for (const user of users) {
     const liElement = document.createElement("li");
@@ -75,172 +78,30 @@ function renderUsers() {
      `;
       
 
-    list.appendChild(liElement);
+    list.appendChild(liElement); //añado elemento hijo (li)
   }
   const profiles = document.querySelectorAll(".js-profile");
   for (const profile of profiles) {
     profile.addEventListener("click", addFriend);
-    console.log("ha hehco click");
+    //console.log("ha hehco click");
   }
   addClassSelected();
 }
 
-function saveOnLocalStorage() {
+//CARGAR USUARIOS EN LOCALSTOREAGE
+function saveLocalStorage() {
   localStorage.setItem("users", JSON.stringify(users));
 }
 
-function recoverFromLocalStorage() {
+function recoverLocalStorage() {
   users = JSON.parse(localStorage.getItem("users"));
   list.innerHTML = "";
   renderUsers();
 }
 
-saveDataButton.addEventListener("click", saveOnLocalStorage);
-recoverDataButton.addEventListener("click", recoverFromLocalStorage);
+saveUsers.addEventListener("click", saveLocalStorage);
+recoverUsers.addEventListener("click", recoverLocalStorage);
 
 
 
 
-// //seleccionar elementos html
-// const list = document.querySelector(".js-list");
-// const buttonSave = document.querySelector(".js-button-save");
-// const buttonRecover = document.querySelector(".js-button-save");
-// //array people
-// let users = [];
-// let usersSelectedFriends = [];
-
-
-// //OBTENER 10 USUARIOS DE LA API
-// function getRandomUser (){
-//     fetch("https://randomuser.me/api/?results=10")
-//     .then(response => response.json())
-//     .then((data) => {
-//         const users = data.results;
-    
-//         //renderUsers(users);
-        
-
-//         // PINTAR USUARIOS HTML
-//         for(const user of users){
-//             //console.log(user);
-            
-//             list.innerHTML += `
-            
-//             <li class="friend-result" id=${user.login.uuid}>
-//                 <img src="${user.picture.large}" alt="${user.name.first}">
-//                 <p>${user.name.first}</p>
-//                 <p>${user.location.city}</p>
-//                 <p>${user.login.username}</p>
-
-//             </li>
-//             `
-
-           
-            
-//         }
-
-//         // const friendResults = document.querySelectorAll(".friend-result");
-//         // for (const friend of friendResults){
-          
-//         handleClick();
-
-
-//         // }
-
-//         //addClassUserFriend();
-
-//       });
-//     }
-    
-// getRandomUser() //llamo a la función para que me aparezcan los datos en la consola 
-
-
-// //MARCAR COMO AMIGOS
-// // function addClassUserFriend() {
-// //   for (const ser of users) {
-// //     const friend = document.querySelector(`#${ser.login.uuid}`);
-// //     if (user.isFriend ===  "True"){
-// //       friend.classList.add("userFriend-selected");
-// //     } else {
-// //       friend.classList.remove("userFriend-selected");
-// //     }
-// //   }
-// // }
-
-
-// function handleClick(event) {
-//   const userId = event.currentTarget.id;
-
-//   for (const user of users) {
-//     if (user.id === userId) {
-//       const isFriend = user.isFriend;
-//       if (isFriend === "True") {
-//         user.isFriend = "False";
-//       } else {
-//         user.isFriend = "True";
-//       }
-//     }
-//   }
-//   //list.innerHTML = "";
-//   getRandomUser();
-// }
-
-// function marcarComoAmigo(usuario) {
-//   usuario.isFriend = !usuario.isFriend;  // Cambiamos el valor de isFriend
-//   handleClick();
-//    // Vuelvo a pintar la lista con los cambios
-// }
-
-// // function handleClick(event) {
-// //     const userClicked = event.currentTarget.id;//click en cada div
-// //     //console.log("clicked element:", userClicked);
-
-// //     const userFriend = users.find((user) => {
-// //       return user.login.uuid === userClicked;
-// //     });
-// //     console.log(event.currentTarget);
-
-// //     event.currentTarget.classList.toggle("userFriend-selected");
-
-//     // if (userFriend === null) {
-//     //   userFriend.classList.toggle("userFriend-selected");
-//     //   //console.log(userFriend);
-//     // }
-    
-    
-  
-//     //const userFriend = users.find((user) => user.login.uuid === userClicked); //posición del objeto en el array
-    
-
-//     // if (userFriend !== -1) {
-//     //     users[userClicked] = true;
-//     //     event.currentTarget.classList.toggle("userFriend-selected");
-//     //     console.log(users);
-
-//     // }
-
-
-// // list.addEventListener("click", handleClick); //escuchancl el click sobre cada usuario
-
-
-// //Función para guardar los usuarios en localStorage
-// function saveUsers() {
-//     localStorage.setItem('friends', JSON.stringify(users));
-//     alert("Usuarios guardados en localStorage.");
-//     console.log(saveUsers);
-//   }
-
-//   // Función para cargar los usuarios desde localStorage
-// function loadUsers() {
-//     const storedUsers = localStorage.getItem('friends');
-//     //console.log(storedUsers);
-//     if (storedUsers) {
-//       users = JSON.parse(storedUsers);
-//       getRandomUser();
-//     } else {
-//       alert("No hay usuarios guardados.");
-//     }
-//   }
-
-// buttonSave.addEventListener('click', saveUsers);
-// buttonRecover.addEventListener('click', loadUsers);
