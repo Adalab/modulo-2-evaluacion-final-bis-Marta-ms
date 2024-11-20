@@ -14,13 +14,14 @@ function getRandomUser(){
   .then((data) => {
     for (const result of data.results) {
       //los usurios obtenidos los guardo en el array vacío users para luego utilizarlo
-      users.push({
+      users.push({ //selecciono los datos que quiero mostrar
         name: result.name.first,
         city: result.location.city,
         photo: result.picture.large,
         usrname: result.login.username,
         id: result.login.uuid,
-        isFriend: false, //por defecto no es amigo
+        isFriend: false,
+        number: result.phone, //por defecto no es amigo
       });
     }
     renderUsers();
@@ -31,7 +32,7 @@ function getRandomUser(){
 getRandomUser();//llamo a la función para que me aparezcan los datos en la consola
 
 
-function addFriend(event) {
+function addFriend(event) { //cuando el usuario hace click
   //event.preventDefault();
   const userId = event.currentTarget.id;
   //console.log(userId); //  id del usuario
@@ -53,7 +54,7 @@ function addFriend(event) {
 //MARCAR COMO AMIGOS
 function addClassSelected() {
   for (const user of users) {
-    const friend = document.getElementById(`${user.id}`); //obtengo el elemento con el id del usuario
+    const friend = document.querySelector(`#${user.id}`); //obtengo el elemento con el id del usuario
     //si el usuario es amigo isFriend:True añado clase friends
     if (user.isFriend === "True") { 
       friend.classList.add("friends");
@@ -65,7 +66,7 @@ function addClassSelected() {
 
 // PINTAR USUARIOS HTML
 function renderUsers() {
-  for (const user of users) {
+  for (const user of users) { //recorre array users y cre elemento LI
     const liElement = document.createElement("li");
 
     liElement.innerHTML = `
@@ -74,6 +75,7 @@ function renderUsers() {
         <p>${user.name}</p>
         <p>${user.city}</p>
         <p>${user.username}</p>
+        <p>${user.number}</p>
      </li>
      `;
       
