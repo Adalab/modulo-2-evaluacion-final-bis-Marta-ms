@@ -8,16 +8,21 @@
     <link rel="stylesheet" href="./CSS/style.css">
 </head>
 <body>
-    <main>
+
+    <header class="header-container">
         <h1>People</h1>
+
         <div class="button-container">
-            <button class="js-button-save">Guardar datos</button>
-            <button class="js-button-recover">Recuperar datos</button>
+            <button class="js-save-data">Guardar datos</button>
+            <button class="js-recover-data">Recuperar datos</button>
         </div>
+    </header>
+    <main>
+        <section class="section-list">
+            <ul class="js-profile js-list-users"></ul>
+        </section>
     </main>
-    <section>
-        <ul class="js-list"></ul>
-    </section>
+    
     <script src="./js/main.js"></script>
 </body>
 </html>

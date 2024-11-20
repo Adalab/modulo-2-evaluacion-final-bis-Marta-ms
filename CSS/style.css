@@ -1,0 +1,57 @@
+
+main {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.header-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 60px;
+    
+}
+
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px;
+    gap: 20px;
+
+}
+.section-list {
+    display: flex;
+    flex-direction: column;
+    padding: 80px;
+
+}
+.js-list-users {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: auto;
+    padding: 20px;
+    gap: 20px;
+}
+
+li {
+    margin-bottom: 20px;
+}
+
+.js-profile {
+    background-color: rgb(200, 172, 227);
+    width: 80%;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+.friends {
+    background-color: rgb(145, 203, 145);
+}
